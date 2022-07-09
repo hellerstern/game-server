@@ -5,4 +5,4 @@ const app = express();
 
 app.use("/", require("./routes/routes"));
 
-app.listen(80, () => console.log("Server is running on 80"));
+app.listen(5000, () => console.log("Server is running on 5000"));

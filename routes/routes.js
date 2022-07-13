@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.get('/test', (req, res) => {
   (async () => {
-    const please = await axios.get(`https://m2-dev-controllermodz.aqeltech.com/rest/V1/products/byops5/options`, {
+    const please = await axios.get(`http://cors-anywhere.herokuapp.com/corsdemo/https://m2-dev-controllermodz.aqeltech.com/rest/V1/products/byops5/options`, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
         'Authorization': 'Bearer 7qcul86v2eqvursm9a60ecgk8g9ofz5m',

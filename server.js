@@ -20,7 +20,7 @@ app.get('/test', (req, res) => {
         "Access-Control-Allow-Headers": "Content-Type, Depth, User-Agent, X-File-Size, X-Requested-With, If-Modified-Since, X-File-Name, Cache-Control"
       }
     });
-    res.json(please.data);
+    res.send(please.data);
   })();
 });
 

@@ -5,7 +5,7 @@ const cors = require('cors');
 const app = express();
 
 app.use(cors({
-  origin: 'http://localhost:3000'
+  origin: 'https://game-concole-maker.vercel.app/'
 }));
 
 app.get('/test', (req, res) => {

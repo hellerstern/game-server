@@ -59,16 +59,30 @@ app.get('/get_quote_id', async (req, res) => {
 });
 
 app.post('/add_product', async(req, res) => {
-  const please = await axios.post(`https://m2-dev-controllermodz.aqeltech.com/rest/V1/guest-carts/${req.body.cartItem.quoteId}/items`, req.body, {
-    headers: {
-      'Content-Type': 'application/json;charset=UTF-8',
-      "Access-Control-Allow-Origin": '*',
-      "Access-Control-Allow-Credentials": true,
-      "Access-Control-Allow-Methods": "OPTIONS, GET, POST",
-      "Access-Control-Allow-Headers": "Content-Type, Depth, User-Agent, X-File-Size, X-Requested-With, If-Modified-Since, X-File-Name, Cache-Control"
-    }
-  });
-  res.send(please.data);
+  res.send({
+    success: true,
+    url: `https://m2-dev-controllermodz.aqeltech.com/rest/V1/guest-carts/${req.body.cartItem.quoteId}/items`
+  })
+  try
+  {
+    const please = await axios.post(`https://m2-dev-controllermodz.aqeltech.com/rest/V1/guest-carts/${req.body.cartItem.quoteId}/items`, req.body, {
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+        "Access-Control-Allow-Origin": '*',
+        "Access-Control-Allow-Credentials": true,
+        "Access-Control-Allow-Methods": "OPTIONS, GET, POST",
+        "Access-Control-Allow-Headers": "Content-Type, Depth, User-Agent, X-File-Size, X-Requested-With, If-Modified-Since, X-File-Name, Cache-Control"
+      }
+    });
+    res.send(please.data);
+  }
+  catch (error) {
+    res.send({
+      success: false,
+      message: error.message
+    });
+  }
+
 });
 
 

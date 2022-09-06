@@ -66,10 +66,6 @@ app.get('/get_quote_id', async (req, res) => {
 });
 
 app.post('/add_product', async(req, res) => {
-  res.send({
-    success: true,
-    url: `https://m2-dev-controllermodz.aqeltech.com/rest/V1/guest-carts/${req.body.cartItem.quoteId}/items`
-  })
   try
   {
     const please = await axios.post(`https://m2-dev-controllermodz.aqeltech.com/rest/V1/guest-carts/${req.body.cartItem.quoteId}/items`, req.body, {

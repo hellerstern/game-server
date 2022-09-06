@@ -88,7 +88,13 @@ app.get('/get_quote_id', async (req, res) => {
 app.post('/add_product', async(req, res) => {
   try
   {
-    const please = await axios.post(`https://m2-dev-controllermodz.aqeltech.com/rest/V1/guest-carts/${parseInt(req.body.cartId)}/items`, req.body.cart_item, {
+    res.send({
+      success: true,
+      message: `https://m2-dev-controllermodz.aqeltech.com/rest/V1/guest-carts/${req.body.cartId}/items`
+    });
+    const please = await axios.post(`https://m2-dev-controllermodz.aqeltech.com/rest/V1/guest-carts/${req.body.cartId}/items`, {
+      cart_item: req.body.cart_item
+    }, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
         "Access-Control-Allow-Origin": '*',

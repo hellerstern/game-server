@@ -74,7 +74,7 @@ app.get('/get_quote_id', async (req, res) => {
           "Access-Control-Allow-Headers": "Content-Type, Depth, User-Agent, X-File-Size, X-Requested-With, If-Modified-Since, X-File-Name, Cache-Control"
         }
       });
-      res.send({cartId: createCart.data.toString(), quoteData: getQuoteId.data});
+      res.send({quote_id: createCart.data.toString(), cartData: getQuoteId.data});
     }
     else
     {

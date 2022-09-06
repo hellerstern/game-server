@@ -10,6 +10,11 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use(bodyParser.json())
 
+app.all('/*', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+});
 
 app.get('/options', async (req, res) => {
   if (!req.query || !req.query.sku) {
@@ -101,9 +106,7 @@ app.get('/get_xbox_options', (req, res) => {
     res.send(please.data);
   })();
 });
-const corsOptions = {
-  origin: '*',
-  optionsSuccessStatus: 200
-}
-app.use(cors(corsOptions));
+
+
+
 app.listen(process.env.PORT || 5000, () => console.log("Server is running on 5000"));

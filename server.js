@@ -68,7 +68,7 @@ app.get('/get_quote_id', async (req, res) => {
 app.post('/add_product', async(req, res) => {
   try
   {
-    const please = await axios.post(`https://m2-dev-controllermodz.aqeltech.com/rest/V1/guest-carts/${req.body.cartItem.quoteId}/items`, req.body, {
+    const please = await axios.post(`https://m2-dev-controllermodz.aqeltech.com/rest/V1/guest-carts/${req.body.cart_item.quote_id}/items`, req.body, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
         "Access-Control-Allow-Origin": '*',

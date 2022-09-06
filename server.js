@@ -6,10 +6,6 @@ const { response } = require("express");
 
 const app = express();
 
-app.use(cors({
-  origin: '*'
-}));
-
 app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use(bodyParser.json())
@@ -92,4 +88,5 @@ app.get('/get_xbox_options', (req, res) => {
   })();
 });
 
+app.use(cors());
 app.listen(process.env.PORT || 5000, () => console.log("Server is running on 5000"));

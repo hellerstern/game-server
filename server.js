@@ -10,7 +10,8 @@ app.use(cors());
 app.options('*', cors());
 app.use(bodyParser.urlencoded({ extended: false }))
 
-app.use(bodyParser.json())
+app.use(bodyParser.json({ limit: '10mb' }))
+app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 
 app.all('/*', function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");

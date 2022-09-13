@@ -146,6 +146,7 @@ app.post('/update_product', async(req, res) => {
     }, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
+        'Authorization': 'Bearer 7qcul86v2eqvursm9a60ecgk8g9ofz5m',
         "Access-Control-Allow-Origin": '*',
         "Access-Control-Allow-Credentials": true,
         "Access-Control-Allow-Methods": "OPTIONS, GET, POST, PUT",
@@ -170,6 +171,7 @@ app.post('/add_product', async(req, res) => {
     }, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
+        'Authorization': 'Bearer 7qcul86v2eqvursm9a60ecgk8g9ofz5m',
         "Access-Control-Allow-Origin": '*',
         "Access-Control-Allow-Credentials": true,
         "Access-Control-Allow-Methods": "OPTIONS, GET, POST",

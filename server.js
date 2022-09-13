@@ -142,7 +142,7 @@ app.get('/get_quote_id', async (req, res) => {
 app.post('/add_product', async(req, res) => {
   try
   {
-    const please = await axios.post(`https://m2-dev-controllermodz.aqeltech.com/rest/V1/guest-carts/${req.body.cartItem.quoteId}/items`, {
+    const please = await axios.post(`https://m2-dev-controllermodz.aqeltech.com/rest/V1/guest-carts/${req.body.cartItem.quoteId}/items/${req.body.itemId ?? ''}`, {
       cartItem: req.body.cartItem
     }, {
       headers: {

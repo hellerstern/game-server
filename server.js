@@ -3,7 +3,7 @@ const axios = require("axios");
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const { response } = require("express");
-
+const fs = require('fs');
 const app = express();
 
 app.use(cors());
@@ -17,6 +17,41 @@ app.all('/*', function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "X-Requested-With");
   next();
+});
+
+function readFiles(dirname, onFileContent, onError) {
+  fs.readdir(dirname, function(err, filenames) {
+    if (err) {
+      onError(err);
+      return;
+    }
+    const arrData = []
+    filenames.forEach(function(filename) {
+      fs.readFile(dirname + filename, 'utf-8', function(err, content) {
+        if (err) {
+          onError(err);
+          return;
+        }
+        arrData.push({filename, content})
+        if (arrData.length === filenames.length)
+        {
+          onFileContent('filename', arrData);
+        }
+      });
+    });
+  });
+}
+
+app.get('/assets', async (req, res) => {
+  if (!req.query || !req.query.sku) {
+    return res.status(400).send('SKU ID is required');
+  }
+  readFiles('./assets/', function(filename, content) {
+    res.send({data: content});
+  }, function(err) {
+    res.status(500).json({error: 'Ha Ocurrido un error'});
+    throw err;
+  });
 });
 
 app.get('/options', async (req, res) => {
@@ -53,38 +88,55 @@ app.get('/test', (req, res) => {
   })();
 });
 
+app.get('/get_product', async (req, res) => {
+  if (!req.query || !req.query.quoteId) {
+    return res.status(400).send('quoteId is required');
+  }
+  const please = await axios.get(`https://m2-dev-controllermodz.aqeltech.com/rest/V1/guest-carts/${req.query.quoteId}/items`, {
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+      'Authorization': 'Bearer 7qcul86v2eqvursm9a60ecgk8g9ofz5m',
+      "Access-Control-Allow-Origin": '*',
+      "Access-Control-Allow-Credentials": true,
+      "Access-Control-Allow-Methods": "OPTIONS, GET, POST",
+      "Access-Control-Allow-Headers": "Content-Type, Depth, User-Agent, X-File-Size, X-Requested-With, If-Modified-Since, X-File-Name, Cache-Control"
+    }
+  });
+  res.send(please.data);
+});
+
 app.get('/get_quote_id', async (req, res) => {
-    const createCart = await axios.post(`https://m2-dev-controllermodz.aqeltech.com/rest/V1/guest-carts`, {
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-        "Access-Control-Allow-Origin": '*',
-        "Access-Control-Allow-Credentials": true,
-        "Access-Control-Allow-Methods": "OPTIONS, GET, POST",
-        "Access-Control-Allow-Headers": "Content-Type, Depth, User-Agent, X-File-Size, X-Requested-With, If-Modified-Since, X-File-Name, Cache-Control"
-      }
-    });
-    res.send(createCart.data.toString());
-    // if (createCart.data.toString() !== '')
-    // {
-    //   const getQuoteId = await axios.get(`https://m2-dev-controllermodz.aqeltech.com/rest/V1/guest-carts/${createCart.data.toString()}`, {
-    //     headers: {
-    //       'Content-Type': 'application/json;charset=UTF-8',
-    //       'Authorization': 'Bearer 7qcul86v2eqvursm9a60ecgk8g9ofz5m',
-    //       "Access-Control-Allow-Origin": '*',
-    //       "Access-Control-Allow-Credentials": true,
-    //       "Access-Control-Allow-Methods": "OPTIONS, GET, POST",
-    //       "Access-Control-Allow-Headers": "Content-Type, Depth, User-Agent, X-File-Size, X-Requested-With, If-Modified-Since, X-File-Name, Cache-Control"
-    //     }
-    //   });
-    //   res.send({quote_id: createCart.data.toString(), cartData: getQuoteId.data});
-    // }
-    // else
-    // {
-    //   res.send({
-    //     success: false,
-    //     message: 'Wrong when creating Cart'
-    //   });
-    // }
+  const createCart = await axios.post(`https://m2-dev-controllermodz.aqeltech.com/rest/V1/guest-carts`, {
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+      "Access-Control-Allow-Origin": '*',
+      "Access-Control-Allow-Credentials": true,
+      "Access-Control-Allow-Methods": "OPTIONS, GET, POST",
+      "Access-Control-Allow-Headers": "Content-Type, Depth, User-Agent, X-File-Size, X-Requested-With, If-Modified-Since, X-File-Name, Cache-Control"
+    }
+  });
+  res.send(createCart.data.toString());
+  // if (createCart.data.toString() !== '')
+  // {
+  //   const getQuoteId = await axios.get(`https://m2-dev-controllermodz.aqeltech.com/rest/V1/guest-carts/${createCart.data.toString()}`, {
+  //     headers: {
+  //       'Content-Type': 'application/json;charset=UTF-8',
+  //       'Authorization': 'Bearer 7qcul86v2eqvursm9a60ecgk8g9ofz5m',
+  //       "Access-Control-Allow-Origin": '*',
+  //       "Access-Control-Allow-Credentials": true,
+  //       "Access-Control-Allow-Methods": "OPTIONS, GET, POST",
+  //       "Access-Control-Allow-Headers": "Content-Type, Depth, User-Agent, X-File-Size, X-Requested-With, If-Modified-Since, X-File-Name, Cache-Control"
+  //     }
+  //   });
+  //   res.send({quote_id: createCart.data.toString(), cartData: getQuoteId.data});
+  // }
+  // else
+  // {
+  //   res.send({
+  //     success: false,
+  //     message: 'Wrong when creating Cart'
+  //   });
+  // }
 });
 
 app.post('/add_product', async(req, res) => {

@@ -71,6 +71,23 @@ app.get('/options', async (req, res) => {
   res.send(please.data);
 });
 
+app.get('/get_estimated_delivery', async (req, res) => {
+  if (!req.query || !req.query.product_id) {
+    return res.status(400).send('SKU ID is required');
+  }
+  const please = await axios.get(`https://m2-dev-controllermodz.aqeltech.com/estimateddeliverydate/message/update/id/${req.query.product_id}`, {
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+      'Authorization': 'Bearer 7qcul86v2eqvursm9a60ecgk8g9ofz5m',
+      "Access-Control-Allow-Origin": '*',
+      "Access-Control-Allow-Credentials": true,
+      "Access-Control-Allow-Methods": "OPTIONS, GET, POST",
+      "Access-Control-Allow-Headers": "Content-Type, Depth, User-Agent, X-File-Size, X-Requested-With, If-Modified-Since, X-File-Name, Cache-Control"
+    }
+  });
+  res.send(please.data);
+});
+
 app.get('/test', (req, res) => {
   (async () => {
     // Hello.
